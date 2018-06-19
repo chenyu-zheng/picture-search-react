@@ -13,12 +13,18 @@ class SearchForm extends Component {
     });
   };
 
-  handleSubmit = () => {
-    const { query, perPage, orientation } = this.state;
+  handleSubmit = event => {
+    event.preventDefault();
+    const query = this.state.query.trim();
+    if (!query) return;
+    const { perPage, orientation } = this.state;
     this.props.onSubmit({
       query,
       perPage,
       orientation
+    });
+    this.setState({
+      query
     });
   };
 
@@ -26,7 +32,7 @@ class SearchForm extends Component {
     const { query, perPage, orientation } = this.state;
 
     return (
-      <form className="search-form">
+      <form className="search-form" onSubmit={this.handleSubmit}>
         <div className="search-bar">
           <input
             type="text"
@@ -34,9 +40,11 @@ class SearchForm extends Component {
             value={query}
             onChange={this.handleFormChange}
           />
-          <i className="material-icons button" onClick={this.handleSubmit}>
-            search
-          </i>
+          <input
+            className="material-icons button search-button"
+            type="submit"
+            value="search"
+          />
         </div>
         <div className="select-bar">
           <select
